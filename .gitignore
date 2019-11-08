@@ -1,0 +1,11 @@
+# test environment for ansible
+ansible/
+glob
+optparse
+shutil
+sys
+traceback
+subprocess
+
+# env for python3
+virtualenv/
