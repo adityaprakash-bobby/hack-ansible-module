@@ -1,0 +1,16 @@
+#!/usr/bin/python
+
+from ansible.module_utils.basic import *
+
+def main():
+    module = AnsibleModule(
+        argument_spec = dict(
+            name = dict(required=True)
+        )
+    )
+
+    params = module.params
+    module.exit_json(changed=True, name=params['name'])
+
+if __name__ == '__main__':
+    main()
