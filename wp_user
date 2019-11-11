@@ -1,16 +1,27 @@
 #!/usr/bin/python
 
-from ansible.module_utils.basic import *
+from ansible.module_utils.basic import AnsibleModule
+import xmlrpc
+from xmlrpc import client as client_rpc
 
 def main():
     module = AnsibleModule(
         argument_spec = dict(
-            name = dict(required=True)
+            url          = dict(required=True),
+            username     = dict(aliases=['name',], required=True),
+            password     = dict(required=True),
+            display_name = dict(required=False),
         )
     )
 
     params = module.params
-    module.exit_json(changed=True, name=params['name'])
+
+    server = client_rpc.ServerProxy(
+        r'http://{params["url"]}/xmlrpc.php',
+    )
+    res = server.demo.sayHello()
+
+    module.exit_json(changed=True, name=res)
 
 if __name__ == '__main__':
     main()
