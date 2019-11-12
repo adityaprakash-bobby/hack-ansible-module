@@ -17,7 +17,8 @@ def main():
     params = module.params
 
     server = client_rpc.ServerProxy(
-        r'http://{params["url"]}/xmlrpc.php',
+        'http://%s/xmlrpc.php' % params["url"],
+        use_datetime=True,
     )
     res = server.demo.sayHello()
 
