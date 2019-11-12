@@ -42,9 +42,25 @@ def main():
                 k = mappings[k]
             details[k] = v
 
-    res = server.wp.editProfile(1, params['username'], params['password'], details)
+    exixting_users = server.wp.getUsers(1, params['username'], params['password'])
+    current_user = None
 
-    module.exit_json(changed=True, name=res)
+    for user in exixting_users:
+        if user['username'] == params['username']:
+            current_user = user
+            break
+    
+    is_changed = False
+    
+    for k, v in details.items():
+        if current_user[k] != details[k]:
+            current_user[k] = details[k]
+            is_changed = True
+
+    if is_changed:
+        server.wp.editProfile(1, params['username'], params['password'], details)
+
+    module.exit_json(changed=is_changed, user=dict(current_user))
 
 if __name__ == '__main__':
     main()
