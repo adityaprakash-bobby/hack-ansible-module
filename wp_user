@@ -17,7 +17,8 @@ def main():
             nickname     = dict(required=False),
             nicename     = dict(required=False),
             bio          = dict(required=False)
-        )
+        ),
+        supports_check_mode=True,
     )
 
     params = module.params
@@ -27,7 +28,7 @@ def main():
         use_datetime=True,
     )
 
-    skip_fields = ['username', 'password', 'name', 'url']
+    skip_fields = ['_ansible_check_mode', 'username', 'password', 'name', 'url']
     mappings = {
         "user_url" : "url",
     }
@@ -57,7 +58,7 @@ def main():
             current_user[k] = details[k]
             is_changed = True
 
-    if is_changed:
+    if is_changed and not module.check_mode:
         server.wp.editProfile(1, params['username'], params['password'], details)
 
     module.exit_json(changed=is_changed, user=dict(current_user))
