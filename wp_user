@@ -43,10 +43,10 @@ def main():
                 k = mappings[k]
             details[k] = v
 
-    exixting_users = server.wp.getUsers(1, params['username'], params['password'])
+    existing_users = server.wp.getUsers(1, params['username'], params['password'])
     current_user = None
 
-    for user in exixting_users:
+    for user in existing_users:
         if user['username'] == params['username']:
             current_user = user
             break
